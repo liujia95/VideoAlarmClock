@@ -177,7 +177,7 @@ public class ClockSettingActivity extends AppCompatActivity implements TimePicke
         Integer currentMinute = mTimepicker.getCurrentMinute();
 
         Calendar calendar = Calendar.getInstance();
-        calendar.set(year, month, day, currentHour, currentMinute,0);
+        calendar.set(year, month, day, currentHour, currentMinute, 0);
         mTimeInMillis = calendar.getTimeInMillis();
         LogUtils.d("timeInMillis :" + mTimeInMillis + " date: " + calendar.get(Calendar.MONTH) + "月" + calendar.get(Calendar.DAY_OF_MONTH) + "日");
 
@@ -205,9 +205,11 @@ public class ClockSettingActivity extends AppCompatActivity implements TimePicke
     private void saveClcokSettingData() {
         //将数据存储到数据库中
         if (isAdd) {
-            AlarmClockDao.insert(new AlarmClockBean(mTimeInMillis, mEtTitle.getText().toString(), mVideoInfo.displayName, mVideoInfo.path));
+            mAlarmClockBean = new AlarmClockBean(mTimeInMillis, mEtTitle.getText().toString(), mVideoInfo.displayName, mVideoInfo.path);
+            AlarmClockDao.insert(mAlarmClockBean);
         } else {
-            AlarmClockDao.update(new AlarmClockBean(mId, mTimeInMillis, mEtTitle.getText().toString(), mVideoInfo.displayName, mVideoInfo.path));
+            mAlarmClockBean = new AlarmClockBean(mId, mTimeInMillis, mEtTitle.getText().toString(), mVideoInfo.displayName, mVideoInfo.path);
+            AlarmClockDao.update(mAlarmClockBean);
         }
         finish();
     }

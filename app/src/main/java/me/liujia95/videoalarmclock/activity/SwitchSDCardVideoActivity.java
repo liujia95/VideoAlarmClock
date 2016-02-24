@@ -61,7 +61,7 @@ public class SwitchSDCardVideoActivity extends AppCompatActivity implements Vide
         mAdapter = new VideoThumbnailsAdapter(mVideoList, mVideoThumbnailList);
         mRecyclerview.setAdapter(mAdapter);
 
-        //TODO：弹出Progress Dialog
+        //弹出Progress Dialog
         final ProgressDialog dialog = new ProgressDialog(this);
         dialog.setTitle("提示");
         dialog.setMessage("正在搜索资源...");
@@ -96,7 +96,7 @@ public class SwitchSDCardVideoActivity extends AppCompatActivity implements Vide
                     });
                 }
 
-                //TODO: 关闭Progress Dialog
+                //关闭Progress Dialog
                 dialog.dismiss();
             }
         }).start();

@@ -91,9 +91,9 @@ public class VideoViewActivity extends Activity implements MediaPlayer.OnErrorLi
 
     @Override
     public void onPause() {
-        if (mWakelock != null) {
-            mWakelock.release();
-        }
+//        if (mWakelock != null) {
+//            mWakelock.release();
+//        }
 
         // Stop video when the activity is pause.
         mPositionWhenPaused = mVideoview.getCurrentPosition();
