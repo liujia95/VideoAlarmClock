@@ -32,7 +32,7 @@ public class SwitchSDCardVideoActivity extends AppCompatActivity implements Vide
     public List<VideoInfoBean> mVideoList          = null;// 视频信息集合
     public List<Bitmap>        mVideoThumbnailList = null;//视频缩略图集合
 
-    public static final String KEY_VIDEO_INFO = "KEY_VIDEO_INFO";
+    public static final String KEY_VIDEO_INFO = "key_video_info";
 
     @InjectView(R.id.switchvideo_recyclerview)
     RecyclerView mRecyclerview;
@@ -66,7 +66,10 @@ public class SwitchSDCardVideoActivity extends AppCompatActivity implements Vide
         dialog.setTitle("提示");
         dialog.setMessage("正在搜索资源...");
         dialog.setCancelable(false);// 是否可以按退回键取消
-        dialog.show();
+
+        if (!this.isFinishing() && !dialog.isShowing()) {
+            dialog.show();
+        }
 
         //子线程处理耗时操作
         new Thread(new Runnable() {

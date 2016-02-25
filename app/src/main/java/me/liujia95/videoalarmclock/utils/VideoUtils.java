@@ -28,7 +28,7 @@ public class VideoUtils {
                 // sdCard找到视频名称
                 String name = file.getName();
 
-                int i = name.indexOf('.');
+                int i = name.lastIndexOf('.');
                 if (i != -1) {
                     name = name.substring(i);
                     if (name.equalsIgnoreCase(".mp4")
@@ -64,7 +64,8 @@ public class VideoUtils {
                         return true;
                     }
                 } else if (file.isDirectory()) {
-                    getVideoFile(list, file);
+                    //TODO: 不递归，只搜素根目录的视频
+                    //getVideoFile(list, file);
                 }
                 return false;
             }

@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.os.PowerManager;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.MediaController;
 import android.widget.VideoView;
 
 import butterknife.ButterKnife;
@@ -26,11 +25,12 @@ public class VideoViewActivity extends Activity implements MediaPlayer.OnErrorLi
     @InjectView(R.id.video_videoview)
     VideoView mVideoview;
 
-    private Uri             mUri;
-    private MediaController mMediaController;//媒体控制器
+    private Uri mUri;
+    //private MediaController mMediaController;//媒体控制器
     private int mPositionWhenPaused = -1;//记录onPause时视频播放的位置
 
     private PowerManager.WakeLock mWakelock;
+    private PowerManager mPm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,8 +45,8 @@ public class VideoViewActivity extends Activity implements MediaPlayer.OnErrorLi
                 | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
 
         //唤醒屏幕
-        PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
-        mWakelock = pm.newWakeLock(PowerManager.ACQUIRE_CAUSES_WAKEUP | PowerManager.SCREEN_DIM_WAKE_LOCK, "SimpleTimer");
+        mPm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+        mWakelock = mPm.newWakeLock(PowerManager.ACQUIRE_CAUSES_WAKEUP | PowerManager.SCREEN_BRIGHT_WAKE_LOCK, "SimpleTimer");
         mWakelock.acquire();
 
         setContentView(R.layout.activity_video);
@@ -55,6 +55,7 @@ public class VideoViewActivity extends Activity implements MediaPlayer.OnErrorLi
 
         initView();
         initData();
+        initListener();
     }
 
     private void initView() {
@@ -66,10 +67,15 @@ public class VideoViewActivity extends Activity implements MediaPlayer.OnErrorLi
         LogUtils.d("Path: --" + bean.videoPath);
         mUri = Uri.parse(bean.videoPath);
 
-        //初始化工作
-        mMediaController = new MediaController(this);
-        //videoview绑定媒体控制器
-        mVideoview.setMediaController(mMediaController);
+        //媒体控制器的初始化工作
+        //mMediaController = new MediaController(this);
+        ////videoview绑定媒体控制器
+        //mVideoview.setMediaController(mMediaController);
+    }
+
+    private void initListener() {
+        mVideoview.setOnCompletionListener(this);
+        mVideoview.setOnErrorListener(this);
     }
 
     @Override
@@ -91,9 +97,9 @@ public class VideoViewActivity extends Activity implements MediaPlayer.OnErrorLi
 
     @Override
     public void onPause() {
-//        if (mWakelock != null) {
-//            mWakelock.release();
-//        }
+        //        if (mWakelock != null) {
+        //            mWakelock.release();
+        //        }
 
         // Stop video when the activity is pause.
         mPositionWhenPaused = mVideoview.getCurrentPosition();
@@ -110,6 +116,9 @@ public class VideoViewActivity extends Activity implements MediaPlayer.OnErrorLi
      */
     @Override
     public void onCompletion(MediaPlayer mp) {
+        mWakelock.release();
+        LogUtils.d("Video播放完毕");
+
         this.finish();
     }
 

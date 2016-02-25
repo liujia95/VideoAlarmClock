@@ -18,14 +18,13 @@ import me.liujia95.videoalarmclock.viewholder.AlarmClockViewHolder;
 public class AlarmClockAdapter extends RecyclerView.Adapter<AlarmClockViewHolder> implements View.OnClickListener {
 
     private List<AlarmClockBean> mDatas;
-
     private OnItemClickListener mOnItemClickListener = null;
 
     public AlarmClockAdapter(List<AlarmClockBean> datas) {
         this.mDatas = datas;
     }
 
-    public void setData(List<AlarmClockBean> datas){
+    public void setData(List<AlarmClockBean> datas) {
         this.mDatas = datas;
     }
 
