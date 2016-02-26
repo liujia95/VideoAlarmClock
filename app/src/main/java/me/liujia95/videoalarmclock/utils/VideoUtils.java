@@ -64,8 +64,7 @@ public class VideoUtils {
                         return true;
                     }
                 } else if (file.isDirectory()) {
-                    //TODO: 不递归，只搜素根目录的视频
-                    //getVideoFile(list, file);
+                    getVideoFile(list, file);
                 }
                 return false;
             }

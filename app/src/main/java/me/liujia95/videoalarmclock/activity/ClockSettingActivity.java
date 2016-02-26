@@ -108,6 +108,8 @@ public class ClockSettingActivity extends AppCompatActivity implements TimePicke
             day = mycalendar.get(Calendar.DAY_OF_MONTH);//获取这个月的第几天
 
             mTvDate.setText("日期：" + year + "-" + (month + 1) + "-" + day);
+
+            mEtTitle.setText("闹钟");
         } else {
             //编辑闹钟
             Calendar calendar = Calendar.getInstance();
@@ -203,12 +205,18 @@ public class ClockSettingActivity extends AppCompatActivity implements TimePicke
      * 保存闹钟设置
      */
     private void saveClcokSettingData() {
+        String videoName = "默认视频";
+        String path = "默认视频";
+        if (mVideoInfo != null) {
+            videoName = mVideoInfo.displayName;
+            path = mVideoInfo.path;
+        }
         //将数据存储到数据库中
         if (isAdd) {
-            mAlarmClockBean = new AlarmClockBean(mTimeInMillis, mEtTitle.getText().toString(), mVideoInfo.displayName, mVideoInfo.path);
+            mAlarmClockBean = new AlarmClockBean(mTimeInMillis, mEtTitle.getText().toString(), videoName, path);
             AlarmClockDao.insert(mAlarmClockBean);
         } else {
-            mAlarmClockBean = new AlarmClockBean(mId, mTimeInMillis, mEtTitle.getText().toString(), mVideoInfo.displayName, mVideoInfo.path);
+            mAlarmClockBean = new AlarmClockBean(mId, mTimeInMillis, mEtTitle.getText().toString(), videoName, path);
             AlarmClockDao.update(mAlarmClockBean);
         }
         finish();

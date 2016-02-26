@@ -115,6 +115,7 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:lines="1"
+                android:text="默认视频.mp4"
                 android:textColor="#666"
                 android:textSize="14sp"/>
 

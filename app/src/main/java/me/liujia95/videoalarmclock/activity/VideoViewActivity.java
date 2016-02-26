@@ -30,11 +30,10 @@ public class VideoViewActivity extends Activity implements MediaPlayer.OnErrorLi
     private int mPositionWhenPaused = -1;//记录onPause时视频播放的位置
 
     private PowerManager.WakeLock mWakelock;
-    private PowerManager mPm;
+    private PowerManager          mPm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
 
         //让Activity显示在锁屏界面上
         super.onCreate(savedInstanceState);
@@ -46,7 +45,7 @@ public class VideoViewActivity extends Activity implements MediaPlayer.OnErrorLi
 
         //唤醒屏幕
         mPm = (PowerManager) getSystemService(Context.POWER_SERVICE);
-        mWakelock = mPm.newWakeLock(PowerManager.ACQUIRE_CAUSES_WAKEUP | PowerManager.SCREEN_BRIGHT_WAKE_LOCK, "SimpleTimer");
+        mWakelock = mPm.newWakeLock(PowerManager.ACQUIRE_CAUSES_WAKEUP | PowerManager.SCREEN_DIM_WAKE_LOCK, "SimpleTimer");
         mWakelock.acquire();
 
         setContentView(R.layout.activity_video);
@@ -64,8 +63,13 @@ public class VideoViewActivity extends Activity implements MediaPlayer.OnErrorLi
 
     private void initData() {
         AlarmClockBean bean = getIntent().getParcelableExtra(ClockSettingActivity.KEY_ALARMCLOCK);
-        LogUtils.d("Path: --" + bean.videoPath);
-        mUri = Uri.parse(bean.videoPath);
+        if (bean.videoPath.equals("默认视频")) {
+            mUri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.test);
+            LogUtils.d("===== mUri=" + mUri.toString());
+        } else {
+            mUri = Uri.parse(bean.videoPath);
+            LogUtils.d("===== mUri=" + mUri.toString());
+        }
 
         //媒体控制器的初始化工作
         //mMediaController = new MediaController(this);
